@@ -6,7 +6,7 @@ public class ExercicioMultiplaEscolha extends Exercicio {
     private List<String> opcoes;
     private int indiceCorreto;
 
-    public ExercicioMultiplaEscolha(int id, String pergunta, int dificuldade, List<String> opcoes, int indiceCorreto) {
+    public ExercicioMultiplaEscolha(int id, String pergunta, NivelDificuldade dificuldade, List<String> opcoes, int indiceCorreto) {
         super(id, pergunta, dificuldade);
         this.opcoes = opcoes;
         this.indiceCorreto = indiceCorreto;
@@ -32,7 +32,7 @@ public class ExercicioMultiplaEscolha extends Exercicio {
 
     @Override
     public int calcularPontos(int tentativas) {
-        int pontosBase = dificuldade * 10;
+        int pontosBase = (int) (10 * getNivelDificuldade().getMultiplicadorXp());
         return Math.max(pontosBase - ((tentativas - 1) * 2), 2);
     }
 }
