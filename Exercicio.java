@@ -5,10 +5,15 @@ public abstract class Exercicio implements Avaliavel {
     protected String pergunta;
     protected int dificuldade;
 
-    public Exercicio(int id, String pergunta, int dificuldade) {
+    public Exercicio(int id, String pergunta, NivelDificuldade nivelDificuldade) {
         this.id = id;
         this.pergunta = pergunta;
-        this.dificuldade = dificuldade;
+        this.dificuldade = nivelDificuldade.getNivel();
+    }
+
+    // Mantém compatibilidade caso queira instanciar passando int diretamente
+    public Exercicio(int id, String pergunta, int dificuldade) {
+        this(id, pergunta, NivelDificuldade.fromInt(dificuldade));
     }
 
     protected String obterPergunta() {
@@ -19,7 +24,12 @@ public abstract class Exercicio implements Avaliavel {
         return dificuldade;
     }
 
+    public NivelDificuldade getNivelDificuldade() {
+        return NivelDificuldade.fromInt(this.dificuldade);
+    }
+
     public void realizarExercicio() {
-        System.out.println("Exercício " + id + " [" + dificuldade + "★]: " + obterPergunta());
+        NivelDificuldade nivel = getNivelDificuldade();
+        System.out.println("Exercício " + id + " [" + nivel.getDescricao().toUpperCase() + "]: " + obterPergunta());
     }
 }
