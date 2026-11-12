@@ -7,48 +7,58 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) {
-        // 1. Criar Utilizador e Perfil
         Usuario usuario = new Usuario(1, "Maria Silva", new Date());
         Perfil perfil = new Perfil(101, "Português");
         usuario.setPerfil(perfil);
 
-        // 2. Criar Curso e Lição
         Curso curso = new Curso(1, "Inglês", "Inglês Básico");
-        Licao licao1 = new Licao(1, "Saudações", 1);
+        Licao licao1 = new Licao(1, "Saudações e Frases", 1);
         curso.adicionarLicao(licao1);
 
-        // 3. Criar Exercícios baseados no UML
+        // Exercício FÁCIL (10 XP * 1.0 = 10 XP)
         ExercicioMultiplaEscolha ex1 = new ExercicioMultiplaEscolha(
                 1,
                 "Como se diz 'Olá' em inglês?",
-                1,
+                NivelDificuldade.FACIL,
                 Arrays.asList("0) Bye", "1) Hello", "2) Thanks"),
                 1
         );
 
+        // Exercício MÉDIO (15 XP * 1.5 = 22 XP)
         ExercicioTraducao ex2 = new ExercicioTraducao(
                 2,
                 "Traduza a frase 'Good morning'",
-                2,
+                NivelDificuldade.MEDIO,
                 "Good morning",
                 "Bom dia"
         );
 
+        // Exercício DIFÍCIL (15 XP * 2.0 = 30 XP)
+        ExercicioTraducao ex3 = new ExercicioTraducao(
+                3,
+                "Traduza a frase 'I would like a cup of coffee, please'",
+                NivelDificuldade.DIFICIL,
+                "I would like a cup of coffee, please",
+                "Eu gostaria de uma xícara de café, por favor"
+        );
+
         licao1.adicionarExercicio(ex1);
         licao1.adicionarExercicio(ex2);
+        licao1.adicionarExercicio(ex3);
 
-        // 4. Executar fluxo simples de resolução
-        System.out.println("=== CURSO: " + curso.getNomeCurso() + " ===");
-        System.out.println("=== LIÇÃO: " + licao1.getTitulo() + " ===");
-        System.out.println("Utilizador: " + usuario.getNomeUsuario() + "\n");
+        System.out.println("=== CURSO: " + curso.getNomeCurso() + " | LIÇÃO: " + licao1.getTitulo() + " ===\n");
 
         for (Exercicio ex : licao1.getExercicio()) {
             ex.realizarExercicio();
 
-            String respostaSimulada = (ex instanceof ExercicioMultiplaEscolha) ? "1" : "Bom dia";
-            boolean acertou = ex.avaliarResposta(respostaSimulada);
+            // Simulando respostas corretas
+            String respostaSimulada = switch (ex.getNivelDificuldade()) {
+                case FACIL -> "1";
+                case MEDIO -> "Bom dia";
+                case DIFICIL -> "Eu gostaria de uma xícara de café, por favor";
+            };
 
-            if (acertou) {
+            if (ex.avaliarResposta(respostaSimulada)) {
                 int pontos = ex.calcularPontos(1);
                 System.out.println("Resposta correta!");
                 usuario.getPerfil().adicionarXP(pontos);
